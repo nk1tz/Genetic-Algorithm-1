@@ -16,7 +16,7 @@ function generateNewName(L){
 }
 
 console.log(nameTarget);
-console.log( generateNewName(nameTarget.length) );
+// console.log( generateNewName(nameTarget.length) );
 
 
 var desiredPopulationSize = 10;
@@ -32,7 +32,6 @@ function generateNewPopulation(size){
 }
 
 var currentPopulation = generateNewPopulation(desiredPopulationSize);
-console.log(currentPopulation);
 
 //Measure every individual's fitness in a given population
 
@@ -50,12 +49,71 @@ function measureIndividualFitness(ind){
 var scores = currentPopulation.map( measureIndividualFitness );
 
 console.log(currentPopulation);
-console.log(scores);
+// console.log(scores);
 
 //Breed the current population to make next generation using scores as probability of reproducion.
 
 //Choose two individuals randomly using scores as weights
+//First we inverte the weight map using a little trick: (2 x average - score)/sum
+var sumOfScores = scores.reduce(function(a, b) {
+    return a + b;
+});
 
-//Splice them together randomly
+//This is the weight inversion function : (2 x average - score)/sum
+var averageScore = sumOfScores / currentPopulation.length;
+function invertWeight(originalWeight){
+    return (2 * averageScore - originalWeight)/sumOfScores;
+}
+//this following array represents the weighted probabilities of mating based on a 0 to 1 scale.
+var probabilityOfMating = scores.map( invertWeight );
 
-//Insert that baby into the nextGeneration array.
+//this following array represents the ranges between 0 and 1 that each individual represents. Used for direct random selection.
+var thresholdsOfProbability = [probabilityOfMating.length];
+for(var i = 0; i < probabilityOfMating.length; i++){ 
+    if(i === 0){
+         thresholdsOfProbability[i] = probabilityOfMating[i];
+    } else {
+        thresholdsOfProbability[i] = probabilityOfMating[i] + thresholdsOfProbability[i-1];
+    }
+}
+
+//Return two mates (could be the same, doesn't matter)
+function chooseMate(){
+    var throwDart = Math.random();
+    var flag = 0;
+    var x = 0;
+    while( flag == false ){
+        if( throwDart < thresholdsOfProbability[x] ){
+            flag = true;
+            return x;
+        } else x++;
+    }
+}
+
+//Splice them together randomly and make baby
+function makeBaby(mate1, mate2){
+    var spliceLocation = randomIntFromInterval(0,currentPopulation[mate1].length);
+    var baby = currentPopulation[mate1].slice(0, spliceLocation) + currentPopulation[mate2].slice(spliceLocation);
+    return baby;
+}
+
+
+//Time to generate the nextPopulation array.
+var nextPopulation = [];
+
+function generateNextPop(){
+    for(var i in currentPopulation){
+        //Now actually choose two individuals
+        var mate1 = chooseMate();
+        var mate2 = chooseMate();
+        var baby = makeBaby(mate1,mate2);
+        nextPopulation.push(baby);
+    }
+}
+
+generateNextPop();
+console.log(nextPopulation);
+
+//nextPopulation becomes currentPopulation
+currentPopulation = nextPopulation;
+console.log(currentPopulation);
