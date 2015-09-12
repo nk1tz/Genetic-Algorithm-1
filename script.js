@@ -24,7 +24,6 @@ while(solutionIsFound == false){
     console.log(currentPopulation);
 }
 
-
 //
 //           FITNESS EVALUATION
 //
@@ -86,6 +85,7 @@ function breedNextPop(){
         var mate1 = chooseMate();
         var mate2 = chooseMate();
         var baby = makeBaby(mate1,mate2);
+        baby = mutateBaby(baby);
         nextPopulation.push(baby);
     }
     return nextPopulation;
@@ -108,6 +108,14 @@ function chooseMate(){
 function makeBaby(mate1, mate2){
     var spliceLocation = randomIntFromInterval(0,currentPopulation[mate1].length);
     var baby = currentPopulation[mate1].slice(0, spliceLocation) + currentPopulation[mate2].slice(spliceLocation);
+    return baby;
+}
+
+//Mutate baby
+function mutateBaby(baby){
+    var mutationLocation = randomIntFromInterval(0,baby.length);
+    var mutation = String.fromCharCode( randomIntFromInterval(97,122) )
+    baby[mutationLocation] = mutation;
     return baby;
 }
 
