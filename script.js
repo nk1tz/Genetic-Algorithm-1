@@ -1,7 +1,9 @@
 //Global variables
-var nameTarget = "nathaniel"
-var desiredPopulationSize = 10;
+var nameTarget = "avivawolpert"
+var desiredPopulationSize = 50;
+var mutationRate = 0.3;
 var solutionIsFound = false;
+var generationCount = 1;;
 
 console.log(nameTarget);
 
@@ -22,8 +24,10 @@ while(solutionIsFound == false){
     nextPopulation = breedNextPop()
     currentPopulation = nextPopulation;
     console.log(currentPopulation);
+    generationCount++;
 }
-
+if(solutionIsFound == true){ console.log("it took " + generationCount + " generations to evolve the targetName.");
+}
 //
 //           FITNESS EVALUATION
 //
@@ -80,12 +84,16 @@ function measureIndividualFitness(ind){
 //
 //This function breeds the population in order to create the next one.
 function breedNextPop(){
+    nextPopulation = [];
     for(var i in currentPopulation){
         //Now actually choose two individuals
         var mate1 = chooseMate();
         var mate2 = chooseMate();
         var baby = makeBaby(mate1,mate2);
-        baby = mutateBaby(baby);
+        //apply chance of mutation
+        if( Math.random() < mutationRate ){
+            baby = mutateBaby(baby);
+        }
         nextPopulation.push(baby);
     }
     return nextPopulation;
@@ -112,11 +120,11 @@ function makeBaby(mate1, mate2){
 }
 
 //Mutate baby
-function mutateBaby(baby){
-    var mutationLocation = randomIntFromInterval(0,baby.length);
+function mutateBaby(babe){
+    var mutationLocation = randomIntFromInterval(0,babe.length - 1);
     var mutation = String.fromCharCode( randomIntFromInterval(97,122) )
-    baby[mutationLocation] = mutation;
-    return baby;
+    babe = babe.substring(0, mutationLocation) + mutation + babe.substring(mutationLocation + 1);
+    return babe;
 }
 
 
