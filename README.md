@@ -1,18 +1,10 @@
+This is a Genetic Algorithm (GA) which uses a randomly generated population of strings to evolve the target string.
 
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
-
-
-Hi there! Welcome to Cloud9 IDE!
-
-To get you started, create some files, play with the terminal,
-or visit http://docs.c9.io for our documentation.
-If you want, you can also go watch some training videos at
-http://www.youtube.com/user/c9ide.
-
-Happy coding!
-The Cloud9 IDE team
+A Genetic or Evolutionary algorithms can be thought of as a search or optimization algorithm.
+The basics components of a GA are:
+1. A problem that needs solving.
+2. A way of measuring the quality of a potential solution to the problem.
+3. A bunch of random potential solution.
+4. A way of taking the best measured solutions to create a bunch of new ones.
+5. A way making the process repeat until an acceptable or optimal, or perfect solution is found.
+6. 
